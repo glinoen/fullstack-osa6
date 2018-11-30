@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 class Notification extends React.Component {
   render() {
@@ -8,17 +9,26 @@ class Notification extends React.Component {
       borderWidth: 1,
       color: 'mediumseagreen'
     }
-    if (this.props.store.getState().notification.content === '') {
+    if (this.props.notification.content === '') {
       return(null)
     } else {
       return (
         <div style={style}>
-          {this.props.store.getState().notification.content}
-          {console.log(this.props.store.getState())}
+          {this.props.notification.content}
         </div>
       )
     }
   }
 }
 
-export default Notification
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+const ConnectedNotification = connect(
+  mapStateToProps
+)(Notification)
+
+export default ConnectedNotification
