@@ -7,16 +7,26 @@ class AnecdoteList extends React.Component {
     this.props.store.dispatch(voting(anecdote.id))
     this.props.store.dispatch(newVote(anecdote.content))
     setTimeout(() => {
-      this.props.store.dispatch(reset())
-    }    , 5000)
+      if(this.props.store.getState().notification.content.includes(anecdote.content)) {
+        this.props.store.dispatch(reset())
+      }
+    }, 5000)
 
   }
 
   render() {
-    const anecdotes = this.props.store.getState().anecdotes
+    let anecdotes
+    if(this.props.store.getState().filter.content === '') {
+      anecdotes = this.props.store.getState().anecdotes
+    } else {
+      console.log(this.props.store.getState())
+      anecdotes = this.props.store.getState().anecdotes.filter(
+        (anecdote) => anecdote.content.includes(this.props.store.getState().filter.content)
+      )
+    }
+
     return (
       <div>
-        <h2>Anecdotes</h2>
         {anecdotes.sort((a, b) => b.votes - a.votes).map(anecdote =>
           <div key={anecdote.id}>
             <div>

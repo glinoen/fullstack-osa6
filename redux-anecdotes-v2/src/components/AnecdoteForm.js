@@ -13,7 +13,9 @@ class AnecdoteForm extends React.Component {
       newAnecdote(content)
     )
     setTimeout(() => {
-      this.props.store.dispatch(reset())
+      if(this.props.store.getState().notification.content.includes(content)) {
+        this.props.store.dispatch(reset())
+      }
     }    , 5000)
 
     e.target.anecdote.value = ''
