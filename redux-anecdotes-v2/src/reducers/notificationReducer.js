@@ -4,10 +4,8 @@ const initialState = { content: defaultMessage }
 
 const notificationReducer = (store = initialState, action) => {
   switch(action.type) {
-    case 'NEW_VOTE' :
-      return  { content : 'you voted: ' + action.content }
-    case 'NEW_ANECDOTE' :
-      return { content: 'new anecdote created: ' + action.content }
+    case 'NEW_NOTIFICATION' :
+      return { content : action.data }
     case 'RESET' :
       return { content: '' }
     default :
@@ -15,23 +13,17 @@ const notificationReducer = (store = initialState, action) => {
   }
 }
 
-export const newVote = (content) => {
-  return {
-    type: 'NEW_VOTE',
-    content
-  }
-}
-
-export const newAnecdote = (content) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    content
-  }
-}
-
-export const reset = () => {
-  return {
-    type: 'RESET'
+export const basicNotif = (content, time) => {
+  return (dispatch) => {
+    dispatch({
+      type: 'NEW_NOTIFICATION',
+      data: content
+    })
+    setTimeout(() => {
+      dispatch({
+        type: 'RESET'
+      })
+    }, time * 1000)
   }
 }
 

@@ -1,20 +1,14 @@
 import React from 'react'
 import Filter from './Filter'
 import { voting } from '../reducers/anecdoteReducer'
-import { newVote, reset } from '../reducers/notificationReducer'
+import { basicNotif } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'
-import anecdoteService from '../services/anecdotes'
+
 
 class AnecdoteList extends React.Component {
   klik =  (anecdote) => async () => {
-    await anecdoteService.axiosVote(anecdote)
-    this.props.voting(anecdote.id)
-    this.props.newVote(anecdote.content)
-    setTimeout(() => {
-      if(this.props.notification.content.includes(anecdote.content)) {
-        this.props.reset()
-      }
-    }, 5000)
+    this.props.voting(anecdote)
+    this.props.basicNotif(`you voted '${anecdote.content}'`, 5)
 
   }
 
@@ -59,8 +53,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = {
   voting,
-  newVote,
-  reset
+  basicNotif,
 }
 
 
